@@ -96,6 +96,9 @@ public class BasePhysics : MonoBehaviour
     public float SpeedMagnitude { get; set; }
     public float XZmag { get; set; }
 
+
+    public Animator anim;
+
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -112,6 +115,8 @@ public class BasePhysics : MonoBehaviour
     void Update()
     {
         InputChecks();
+        anim.SetBool("isGrounded", Grounded);
+        //anim.SetFloat("Speed", Player);
     }
 
     void InputChecks()
@@ -181,12 +186,14 @@ public class BasePhysics : MonoBehaviour
                 GroundNormal = hit.normal;
                 Grounded = true;
                 GroundMovement();
+                //anim.SetBool("isGrounded", true);
             }
             else
             {
                 Grounded = false;
                 GroundNormal = Vector3.zero;
                 AirMovement();
+                //anim.SetBool("isGrounded", false);
             }
         }
         else
@@ -196,12 +203,14 @@ public class BasePhysics : MonoBehaviour
                 GroundNormal = hit.normal;
                 Grounded = true;
                 GroundMovement();
+                //anim.SetBool("isGrounded", true);
             }
             else
             {
                 Grounded = false;
                 GroundNormal = Vector3.zero;
                 AirMovement();
+                //anim.SetBool("isGrounded", false);
             }
         }
 
@@ -228,6 +237,8 @@ public class BasePhysics : MonoBehaviour
                 //Debug.Log("Rots");
             }
         }
+
+
 
     }
 

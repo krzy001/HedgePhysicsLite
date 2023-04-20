@@ -6,7 +6,7 @@ public class ActionRegular : MonoBehaviour, IState
 {
     BasePhysics Player;
     public Transform Model;
-    public GameObject spinModel, normalModel;
+    //public GameObject spinModel, normalModel;
     ActionManager Actions;
 
     public float skinRotationSpeed=35;
@@ -16,6 +16,8 @@ public class ActionRegular : MonoBehaviour, IState
     public float SkiddingIntensity=-3.5f;
 
     bool hasSked;
+
+    public Animator anim;
 
     void Awake()
     {
@@ -33,12 +35,21 @@ public class ActionRegular : MonoBehaviour, IState
             {
                 newForward = Model.forward;
             }
+            if (newForward.magnitude == 1)
+            {
+                anim.SetFloat("Speed", 0);
+            }
+            else
+            {
+                anim.SetFloat("Speed", newForward.magnitude);
+            }
 
             CharRot = Quaternion.LookRotation(newForward, transform.up);
             Model.rotation = Quaternion.Lerp(Model.rotation, CharRot, Time.deltaTime * skinRotationSpeed);
 
             // CharRot = Quaternion.LookRotation( Player.rigidbody.velocity, transform.up);
             // CharacterAnimator.transform.rotation = Quaternion.Lerp(CharacterAnimator.transform.rotation, CharRot, Time.deltaTime * skinRotationSpeed);
+            //anim.SetBool("isGrounded", true);
         }
         else
         {
@@ -46,6 +57,7 @@ public class ActionRegular : MonoBehaviour, IState
             Quaternion CharRot = Quaternion.LookRotation(VelocityMod, -Player.Gravity.normalized);
             Model.rotation = Quaternion.Lerp(Model.rotation, CharRot, Time.deltaTime * skinRotationSpeed);
         }
+        //anim.SetBool("isGrounded", Player.Grounded);
     }
 
     void FixedUpdate()
@@ -83,13 +95,13 @@ public class ActionRegular : MonoBehaviour, IState
 
         if(Player.isRolling)
         {
-            spinModel.SetActive(true);
-            normalModel.SetActive(false);
+            //spinModel.SetActive(true);
+            //normalModel.SetActive(false);
         }
         else
         {
-            spinModel.SetActive(false);
-            normalModel.SetActive(true);
+            //spinModel.SetActive(false);
+            //normalModel.SetActive(true);
         }
     }
 

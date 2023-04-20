@@ -7,7 +7,7 @@ public class ActionJump : MonoBehaviour, IState
     BasePhysics Player;
     ActionManager Actions;
     public Transform Model;
-    public GameObject spinModel, normalModel;
+    //public GameObject spinModel, normalModel;
 
     public float skinRotationSpeed=20;
 
@@ -38,14 +38,14 @@ public class ActionJump : MonoBehaviour, IState
             jumpSlopeSpeed = Player.rigidbody.velocity.y * JumpSlopeConversion;
         }
 
-        spinModel.SetActive(true);
-        normalModel.SetActive(false);
+        //spinModel.SetActive(true);
+        //normalModel.SetActive(false);
     }
 
     public void Exit()
     {
-        spinModel.SetActive(false);
-        normalModel.SetActive(true);
+        //spinModel.SetActive(false);
+        //normalModel.SetActive(true);
         return;
     }
 
