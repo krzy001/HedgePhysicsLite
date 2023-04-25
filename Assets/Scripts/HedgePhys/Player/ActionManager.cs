@@ -61,11 +61,23 @@ public class ActionManager : MonoBehaviour
 
     }
 
-    public void DamagePlayer()
+    //Player enters "hurt" state to bounce away from enemy. Player also loses health depending on what attacked them.
+    public void DamagePlayer(int value)
     {
         if (Action != 2)
         {
             ChangeAction(2);
+            player.health -= value;
+        }
+    }
+
+    //Heal the player if their health is less than 100.
+    public void HealPlayer(int value)
+    {
+        player.health += value;
+        if(player.health > 100)
+        {
+            player.health = 100;
         }
     }
 

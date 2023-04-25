@@ -11,13 +11,13 @@ public class PauseMenu : MonoBehaviour
 
     public static bool paused;
 
-    // Start is called before the first frame update
+    // Initially the pause menu isnt active
     void Start()
     {
         pauseMenu.SetActive(false);
     }
 
-    // Update is called once per frame
+    // if the player ever presses the escape key, change the state of the pause screen.
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -33,6 +33,7 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    //when paused, ingame time pauses.
     public void PauseGame()
     {
         pauseMenu.SetActive(true);
@@ -40,6 +41,7 @@ public class PauseMenu : MonoBehaviour
         paused = true;
     }
 
+    //When resumed ingame time is set to normal
     public void ResumeGame()
     {
         pauseMenu.SetActive(false);
@@ -47,6 +49,7 @@ public class PauseMenu : MonoBehaviour
         paused = false;
     }
 
+    //go to main menu if player selects quit on the pause screen
     public void GoToMainMenu()
     {
         Time.timeScale = 1f;

@@ -6,6 +6,6 @@ public class ObjectHazard : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        other.attachedRigidbody.GetComponent<ActionManager>().DamagePlayer();
+        other.attachedRigidbody.GetComponent<ActionManager>().DamagePlayer(40);
     }
 }

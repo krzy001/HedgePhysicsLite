@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
-public class BasePhysics : MonoBehaviour
+public class BasePhysics : MonoBehaviour, IDataPersistence
 {
 
     [Header("Movement Values")]
@@ -96,13 +97,30 @@ public class BasePhysics : MonoBehaviour
     public float SpeedMagnitude { get; set; }
     public float XZmag { get; set; }
 
-
+    public int health;
+    public int lives;
     public Animator anim;
+    public Health healthDisplay;
+    public Lives livesDisplay;
+    public string thisLevel;
 
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         PreviousInput = transform.forward;
+        health = 100;
+    }
+
+    //load the amount of lives the player had in the save file
+    public void LoadData(GameData data)
+    {
+        this.lives = data.lives;
+    }
+
+    //Save the amount of lives the player now has into the save file
+    public void SaveData(ref GameData data)
+    {
+        data.lives = this.lives;
     }
 
     void FixedUpdate()
@@ -115,10 +133,17 @@ public class BasePhysics : MonoBehaviour
     void Update()
     {
         InputChecks();
-        anim.SetBool("isGrounded", Grounded);
-        //anim.SetFloat("Speed", Player);
+        anim.SetBool("isGrounded", Grounded); //Tell the player animator if the player is grounded or not to play the appropriate animations
+        healthDisplay.healthCount = health; //Set the UI's display of the player's health correctly.
+        livesDisplay.livesCount = lives; //Set the UI's display of the player's lives correctly.
+        //if the player's health reaches 0, the player loses a life.
+        if (health <= 0)
+        {
+            loseLife();
+        }
     }
 
+    //Rolling has been taken out of this game.
     void InputChecks()
     {
         //Rolling
@@ -186,14 +211,12 @@ public class BasePhysics : MonoBehaviour
                 GroundNormal = hit.normal;
                 Grounded = true;
                 GroundMovement();
-                //anim.SetBool("isGrounded", true);
             }
             else
             {
                 Grounded = false;
                 GroundNormal = Vector3.zero;
                 AirMovement();
-                //anim.SetBool("isGrounded", false);
             }
         }
         else
@@ -203,14 +226,12 @@ public class BasePhysics : MonoBehaviour
                 GroundNormal = hit.normal;
                 Grounded = true;
                 GroundMovement();
-                //anim.SetBool("isGrounded", true);
             }
             else
             {
                 Grounded = false;
                 GroundNormal = Vector3.zero;
                 AirMovement();
-                //anim.SetBool("isGrounded", false);
             }
         }
 
@@ -533,6 +554,25 @@ public class BasePhysics : MonoBehaviour
                 CollisionPoint.position = pointSum;
             }
 
+        }
+    }
+
+    //When the player loses all their health.
+    public void loseLife()
+    {
+        //If their still have more lives, save the new amount of lives and reload the scene
+        if (lives > 0)
+        {
+            lives -= 1;
+            DataPersistenceManager.instance.SaveGame();
+            SceneManager.LoadScene(thisLevel);
+        }
+        //If they have no lives left, reset the life counter to 3 and save it, and load the title screen
+        else
+        {
+            lives = 3;
+            DataPersistenceManager.instance.SaveGame();
+            SceneManager.LoadScene("MainMenu");
         }
     }
 
